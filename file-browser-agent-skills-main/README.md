@@ -37,23 +37,43 @@ npm i
 node node_modules/electron/install.js
 
 # 3. הרצת היישום בסביבת פיתוח
-npm run devיות מלאות: המערכת טוענת את תוכן ה-SKILL.md הרלוונטי ומעבירה את ההנחיות המפורטות למודל להמשך ביצוע הביצוע.
-⚙️ הגדרת משתני סביבה (.env)
-במידה וברצונכם להגדיר מיקום מותאם אישית לתיקיית ה-Skills או להגדיר את מפתח ה-API, צרו קובץ בשם .env בשורש הפרויקט והוסיפו את ההגדרות הבאות:
+npm run dev
+```
+
+---
+
+## ⚙️ הגדרת משתני סביבה (`.env`)
+
+במידה וברצונכם להגדיר מיקום מותאם אישית לתיקיית ה-Skills או להגדיר את מפתח ה-API, צרו קובץ בשם `.env` בשורש הפרויקט והוסיפו את ההגדרות הבאות:
+
+```env
 # נתיב מותאם אישית לתיקיית ה-Skills (אופציונלי)
 FILE_BROWSER_SKILLS_DIR=C:\Users\<username>\.file-browser-agent\skills
 
 # מפתח ה-API של Anthropic (חובה לחיבור למודל)
 ANTHROPIC_API_KEY=sk-ant-your-api-key-here
-📁 ניהול ויצירת Skills
-מיקום תיקיית ברירת המחדל
+```
+
+---
+
+## 📁 ניהול ויצירת Skills
+
+### מיקום תיקיית ברירת המחדל
 ברירת המחדל של המערכת לחיפוש Skills היא:
-C:\Users\<username>\.file-browser-agent\skills
+`C:\Users\<username>\.file-browser-agent\skills`
 
 ניתן ליצור את התיקייה במהירות באמצעות פקודת PowerShell:
+```powershell
 mkdir "$env:USERPROFILE\.file-browser-agent\skills"
-מבנה קובץ SKILL.md
-כל Skill מוגדר בתוך תיקייה ייעודית המכילה קובץ בשם SKILL.md. הקובץ כולל חלק עליון של הגדרות (Frontmatter) ולאחריו הנחיות מפורטות למודל:
+```
+
+---
+
+### מבנה קובץ `SKILL.md`
+
+כל Skill מוגדר בתוך תיקייה ייעודית המכילה קובץ בשם `SKILL.md`. הקובץ כולל חלק עליון של הגדרות (Frontmatter) ולאחריו הנחיות מפורטות למודל:
+
+```md
 ---
 name: summarize_folder
 description: Summarize the contents of a selected folder and list important files.
@@ -61,13 +81,14 @@ description: Summarize the contents of a selected folder and list important file
 
 When the user asks for a summary of a folder, inspect the directory contents,
 list the main files, and provide a concise report in Hebrew.
-🔄 איך המנגנון עובד?
-סריקה וטעינה: האפליקציה סורקת את תיקיית ה-Skills ומאתרת את כל קבצי ה-SKILL.md.
+```
 
-בניית קטלוג: מופק קטלוג מרוכז המכיל את השם והתיאור של כל Skill.
+---
 
-סנכרון מול המודל: הקטלוג מוזן למודל דרך ה-System Prompt וכלי ה-activate_skill.
+## 🔄 איך המנגנון עובד?
 
-אקטיבציה: כאשר המשתמש מבקש משימה המתאימה ל-Skill מסוים, המודל מפעיל את כלי ה-activate_skill.
-
-טעינת הנחיות מלאות: המערכת טוענת את תוכן ה-SKILL.md הרלוונטי ומעבירה את ההנחיות המפורטות למודל להמשך הביצוע.
+1. **סריקה וטעינה:** האפליקציה סורקת את תיקיית ה-Skills ומאתרת את כל קבצי ה-`SKILL.md`.
+2. **בניית קטלוג:** מופק קטלוג מרוכז המכיל את השם והתיאור של כל Skill.
+3. **סנכרון מול המודל:** הקטלוג מוזן למודל דרך ה-System Prompt וכלי ה-`activate_skill`.
+4. **אקטיבציה:** כאשר המשתמש מבקש משימה המתאימה ל-Skill מסוים, המודל מפעיל את כלי ה-`activate_skill`.
+5. **טעינת הנחיות מלאות:** המערכת טוענת את תוכן ה-`SKILL.md` הרלוונטי ומעבירה את ההנחיות המפורטות למודל להמשך הביצוע.
