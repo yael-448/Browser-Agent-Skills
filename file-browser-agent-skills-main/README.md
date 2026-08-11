@@ -1,82 +1,33 @@
-# File Browser Agent עם תמיכה ב-Skills
-
-זהו יישום שולחני (Electron) שמאפשר דפדוף בקבצים יחד עם צ'אט סמכותי שמבין את סביבת הקבצים, בוחר קבצים/תיקיות, קורא/כותב מידע ומפעיל Skills מותאמים למשימות.
-
-היישום כולל עכשיו מנגנון מלא של Discovery ו-Tool Calling עבור Skills:
-
-- גילוי אוטומטי של קבצי SKILL.md מתיקיית ה-Skills
-- יצירת קטלוג Skills שמועבר למודל
-- כלי activate_skill שמאפשר למודל לטעון הנחיות מלאות של Skill רלוונטי
-- טעינה של ה-Skills בזמן ההפעלה וה-IPC לצורך עדכון רשימה
-
----
-
-## דרישות מערכת
-
-- Node.js 18+
-- Windows
-- מפתח Anthropic API Key
-
----
-
-## התקנה והרצה
-
-```powershell
+File Browser Agent עם תמיכה ב-Skills 🚀יישום שולחני מתקדם מבוסס Electron, המשלב דפדוף בקבצים יחד עם סוכן AI עוצמתי. הסוכן מבין את סביבת הקבצים המקומית, מסוגל לבחור קבצים ותיקיות, לקרוא ולכתוב מידע, ולהפעיל Skills (מיומנויות) מותאמים אישית לביצוע משימות מורכבות.✨ תכונות עיקריותDiscovery & Tool Calling ל-Skills: גילוי אוטומטי וטעינה דינמית של מיומנויות מתוך קבצי SKILL.md.ניהול קטלוג Skills: יצירת קטלוג מרכזי המועבר ישירות למודל ה-AI.טעינה בזמן אמת: תמיכה ב-IPC לעדכון וריענון רשימת ה-Skills בזמן הרצה.כלי activate_skill ייעודי: מאפשר למודל לטעון הנחיות עבודה מלאות בזמן אמת לפי סוג המשימה.💻 דרישות מערכתלפני להתחלת העבודה, ודאו שמותקנים אצלכם הרכיבים הבאים:רכיבדרישהסביבת הרצהNode.js בגירסה 18 ומעלהמערכת הפעלהWindowsמפתח APIAnthropic API Key תקף (sk-ant-...)🛠️ התקנה והרצהפתחו את המסוף (Terminal / PowerShell) בתיקיית הפרויקט והריצו את הפקודות הבאות:PowerShell# 1. התקנת תלויות הפרויקט
 npm i
+
+# 2. התקנת Electron
 node node_modules/electron/install.js
+
+# 3. הרצת היישום בסביבת פיתוח
 npm run dev
-```
-
-אם ברצונך להגדיר מיקום מותאם אישית של Skills, צור קובץ .env עם:
-
-```env
+⚙️ הגדרת משתני סביבה (.env)במידה וברצונכם להגדיר מיקום מותאם אישית לתיקיית ה-Skills או להגדיר את מפתח ה-API, צרו קובץ בשם .env בשורש הפרויקט והוסיפו את ההגדרות הבאות:קטע קוד# נתיב מותאם אישית לתיקיית ה-Skills (אופציונלי)
 FILE_BROWSER_SKILLS_DIR=C:\Users\<username>\.file-browser-agent\skills
-ANTHROPIC_API_KEY=sk-ant-...
-```
 
----
-
-## תיקיית Skills
-
-ברירת המחדל היא:
-
-```powershell
-C:\Users\<username>\.file-browser-agent\skills
-```
-
-ניתן ליצור אותה כך:
-
-```powershell
-mkdir "$env:USERPROFILE\.file-browser-agent\skills"
-```
-
-כל Skill הוא תיקייה שמכילה קובץ SKILL.md. הדוגמה הבאה תופעל על ידי המודל כאשר המשימה תתאים לה:
-
-```md
----
+# מפתח ה-API של Anthropic (חובה לחיבור למודל)
+ANTHROPIC_API_KEY=sk-ant-your-api-key-here
+📁 ניהול ויצירת Skillsמיקום תיקיית ברירת המחדלברירת המחדל של המערכת לחיפוש Skills היא:PlaintextC:\Users\<username>\.file-browser-agent\skills
+ניתן ליצור את התיקייה במהירות באמצעות פקודת PowerShell:PowerShellmkdir "$env:USERPROFILE\.file-browser-agent\skills"
+מבנה קובץ SKILL.mdכל Skill מוגדר בתוך תיקייה ייעודית המכילה קובץ בשם SKILL.md. הקובץ כולל חלק עליון של הגדרות (Frontmatter) ולאחריו הנחיות מפורטות למודל:Markdown---
 name: summarize_folder
 description: Summarize the contents of a selected folder and list important files.
 ---
 
 When the user asks for a summary of a folder, inspect the directory contents,
 list the main files, and provide a concise report in Hebrew.
-```
-
----
-
-## איך זה עובד
-
-1. האפליקציה סורקת את תיקיית ה-Skills ומטענת את כל ה-SKILL.md.
-2. היא יוצרת קטלוג Skills עם שם ותיאור.
-3. המודל מקבל את הקטלוג דרך system prompt ודרך כלי activate_skill.
-4. כאשר המשימה מתאימה ל-Skill, המודל מפעיל activate_skill ומקבל את ההנחיות המלאות.
-
----
-
-## סקריפטים זמינים
-
-```powershell
-npm run dev
-npm run build
-npm run typecheck
-```
+🔄 איך המנגנון עובד?Plaintext┌────────────────────────┐      ┌────────────────────────┐      ┌────────────────────────┐
+│  1. סריקת ה-Skills     │ ───> │  2. יצירת הקטלוג      │ ───> │  3. העברת הנתונים      │
+│  טעינת קבצי SKILL.md   │      │  איגוד שמות ותיאורים   │      │  ל-System Prompt ולכלי │
+└────────────────────────┘      └────────────────────────┘      └────────────────────────┘
+                                                                            │
+                                                                            ▼
+┌────────────────────────┐      ┌────────────────────────┐      ┌────────────────────────┐
+│  6. ביצוע המשימה       │ <─── │  5. קבלת ההנחיות       │ <─── │  4. הפעלת Skill        │
+│  בהתאם להנחיות המלאות  │      │  טעינת קובץ SKILL.md   │      │  שימוש ב-activate_skill│
+└────────────────────────┘      └────────────────────────┘      └────────────────────────┘
+סריקה וטעינה: האפליקציה סורקת את תיקיית ה-Skills ומאתרת את כל קבצי ה-SKILL.md.בניית קטלוג: מופק קטלוג מרוכז המכיל את השם והתיאור של כל Skill.סנכרון מול המודל: הקטלוג מוזן למודל דרך ה-System Prompt וכלי ה-activate_skill.אקטיבציה: כאשר המשתמש מבקש משימה המתאימה ל-Skill מסוים, המודל מפעיל את כלי ה-activate_skill.טעינת הנחיות מלאות: המערכת טוענת את תוכן ה-SKILL.md הרלוונטי ומעבירה את ההנחיות המפורטות למודל להמשך ביצוע הביצוע.
